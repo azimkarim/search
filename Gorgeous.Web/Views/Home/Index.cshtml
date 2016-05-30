@@ -1,0 +1,68 @@
+﻿@model Gorgeous.Web.Models.IndexViewModel
+
+@{
+    ViewBag.Title = "Gorgeous - Search web and local businesses";
+}
+
+<h2></h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <form>
+        <fieldset>
+           
+            <div class="form-group">
+                <div class="col-lg-8">
+                    <input class="form-control" type="text" id="searchBox">
+
+                </div>
+                <div class="col-lg-2">
+                    <button id="searchBtn" type="submit" class="form-control btn-primary">Search</button>
+                </div>
+            </div>
+</fieldset>
+</form>
+
+    <!-- items being paged -->
+    <ul>
+        @foreach (var item in Model.Items)
+        {
+            <li><a href="http://www.testing.com">@item</a></li>
+        }
+    </ul>
+
+    <!-- pager -->
+    if (Model.Pager.EndPage > 1)
+    {
+        <ul class="pagination">
+            @if (Model.Pager.CurrentPage > 1)
+            {
+                <li>
+                    <a href="~/Home/Index?page=1">First</a>
+                </li>
+                <li>
+                    <a href="~/Home/Index?page=@(Model.Pager.CurrentPage - 1)">Previous</a>
+                </li>
+            }
+
+            @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+            {
+                <li class="@(page == Model.Pager.CurrentPage ? "active" : "")">
+                    <a href="~/Home/Index?page=@page">@page</a>
+                </li>
+            }
+
+            @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+            {
+                <li>
+                    <a href="~/Home/Index?page=@(Model.Pager.CurrentPage + 1)">Next</a>
+                </li>
+                <li>
+                    <a href="~/Home/Index?page=@(Model.Pager.TotalPages)">Last</a>
+                </li>
+            }
+        </ul>
+    }
+}
